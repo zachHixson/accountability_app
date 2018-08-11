@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--Main Bar options-->
+    <!--<item
+        android:id="@+id/searchButton"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="ifRoom"/>-->
+
+    <item
+        android:id="@+id/optHistoryButton"
+        android:icon="@drawable/ic_history"
+        android:title="Undo"
+        app:showAsAction="ifRoom"/>
+
+
+    <!--Overflow Options-->
+    <item
+        android:id="@+id/optClearList"
+        android:title="Clear List" />
+
+    <item
+        android:id="@+id/optAddTemp"
+        android:title="Add Temporary Student" />
+
+    <!--<item
+        android:id="@+id/optConnectionSettings"
+        android:title="Connection Settings"/>-->
+
+    <item
+        android:id="@+id/optOpen"
+        android:title="Open">
+
+        <menu>
+            <!--<item
+                android:id="@+id/optImportServer"
+                android:title="Refresh roster from Server"
+                />-->
+
+            <item
+                android:id="@+id/optImportDownloads"
+                android:title="Import roster from /Downloads"
+                />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/optAbout"
+        android:title="About" />
+</menu>
