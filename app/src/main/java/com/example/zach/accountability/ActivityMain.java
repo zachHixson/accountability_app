@@ -140,6 +140,8 @@ public class ActivityMain extends AppCompatActivity {
 
                 return true;
             case R.id.optImportDownloads:
+                GlobalStates.StudentList.DeleteStoredList();
+
                 //Open Roster from the downloads  and save it to local storage
                 String rawJSON = openRoster(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), true);
                 GlobalStates.StudentList.PopulateFromJSONString(rawJSON);

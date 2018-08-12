@@ -15,15 +15,6 @@ public class StudentList {
         this.RoomCount = 0;
     }
 
-    public void Populate(String[][] _2dArray){
-        for (int i = 0; i < _2dArray.length; i++){
-            Student newStudent = new Student(_2dArray[i], i);
-            this.StudentArray.add(newStudent);
-
-            Log.v("test", "words");
-        }
-    }
-
     public void PopulateFromJSONString(String _jsonString){
         try{
             JSONArray mainArray;
@@ -82,6 +73,10 @@ public class StudentList {
         for (int i = 0; i < this.StudentArray.size(); i++){
             this.StudentArray.get(i).SetRoom("");
         }
+    }
+
+    public void DeleteStoredList(){
+        StudentArray.clear();
     }
 
     public int Size(){
