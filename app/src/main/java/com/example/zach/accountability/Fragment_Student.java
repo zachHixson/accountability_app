@@ -107,8 +107,4 @@ public class Fragment_Student extends Fragment{
 
         return rootView;
     }
-
-    public void CleanUp(){
-        thisStudent = null;
-    }
 }

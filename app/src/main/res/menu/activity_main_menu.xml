@@ -33,11 +33,6 @@
         android:title="Open">
 
         <menu>
-            <!--<item
-                android:id="@+id/optImportServer"
-                android:title="Refresh roster from Server"
-                />-->
-
             <item
                 android:id="@+id/optImportDownloads"
                 android:title="Import roster from /Downloads"
