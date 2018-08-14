@@ -176,10 +176,6 @@ public class ActivityMain extends AppCompatActivity {
 
                 return true;
             default:
-                //clean up
-                alertDialogBuilder = null;
-                alertDialog = null;
-
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -228,7 +224,6 @@ public class ActivityMain extends AppCompatActivity {
         //Load Previous Roster
         try{
             String rawJSON = openRoster(appInfo.LocalRosterName, false);
-            //studentList.PopulateFromJSONString(rawJSON); remove ############################
             GlobalStates.StudentList = new StudentList();
             GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
             updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
@@ -325,16 +320,16 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         //Add action to history
-        if (historySteps > 1){ //If there was more than one name added, display in format: Suzie LastName and 32 more
-            historySteps -= 1;
-            historyContent = String.format("%1$s and %2$d more", historyContent, historySteps);
+        if (historySteps > 0) { //If there was more than one name added, display in format: Suzie LastName and 32 more
+            if (historySteps > 1) {
+                historySteps -= 1;
+                historyContent = String.format("%1$s and %2$d more", historyContent, historySteps);
+            }
+
+            addToHistory(this.getString(R.string.HistoryAdded), historyContent);
         }
-        addToHistory(this.getString(R.string.HistoryAdded), historyContent);
 
         saveData();
-
-        //clean up
-        historyContent = null;
 
         return true;
     }
@@ -347,9 +342,6 @@ public class ActivityMain extends AppCompatActivity {
         //Call method in TopBar sub-fragment
         Fragment_TopBar topBar = (Fragment_TopBar)getSupportFragmentManager().findFragmentById(R.id.topBar);
         topBar.updateRoomCount(_count);
-
-        //clean up
-        topBar = null;
 
         return true;
     }
@@ -369,15 +361,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     public boolean openAddMenu(){
-        //Declare variables
-        //String jsonIntent;
-
-        //Convert studentList from list to JSON in order to pass through intent
-        //jsonIntent = GlobalStates.StudentList.ToJSONString();
-
         Intent intent = new Intent(ActivityMain.this, ActivityAddStudent.class);
-        /*intent.putExtra("studentList", jsonIntent);
-        intent.putExtra("currentRoom", appInfo.CurrentRoom);*/
 
         startActivityForResult(intent, 1);
 
@@ -388,9 +372,6 @@ public class ActivityMain extends AppCompatActivity {
         //Open DialogCreator box
         DialogCreator dialogCreator = new DialogCreator(ActivityMain.this);
         dialogCreator.CreateSimpleAlert(_title, _text);
-
-        //clean up
-        dialogCreator = null;
 
         return true;
     }

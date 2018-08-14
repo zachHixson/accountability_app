@@ -69,9 +69,6 @@ public class ActivityAddStudent extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.add_student_menu);
         toolbar.setTitle(getString(R.string.AddStudentDialogTitle));
 
-        //Get intent
-        Intent intent = getIntent();
-
         //Fill List
         fillList(studentList);
 
@@ -180,7 +177,6 @@ public class ActivityAddStudent extends AppCompatActivity {
     public boolean selectStudent(int _id){
         //Add student id to list
         idList.add(_id);
-        //GlobalStates.StudentList.SetStudentRoom(_id, GlobalStates.CurrentRoom);
         return true;
     }
 
@@ -191,8 +187,6 @@ public class ActivityAddStudent extends AppCompatActivity {
                 idList.remove(i);
             }
         }
-
-        //GlobalStates.StudentList.SetStudentRoom(_id, "");
 
         return true;
     }
@@ -237,9 +231,6 @@ public class ActivityAddStudent extends AppCompatActivity {
         //Open DialogCreator box
         DialogCreator dialogCreator = new DialogCreator(ActivityAddStudent.this);
         dialogCreator.CreateSimpleAlert(getString(R.string.InfoDialogTitle), _text.replace(";", "\n"));
-
-        //clean up
-        dialogCreator = null;
 
         return true;
     }

@@ -101,14 +101,9 @@ public class Fragment_NameList extends Fragment{
         Fragment_Student f = (Fragment_Student) getFragmentManager().findFragmentByTag(Integer.toString(_id));
 
         if (f != null) {
-            f.CleanUp();
             fragTrans.remove(f);
             fragTrans.commit();
         }
-
-        //clean up
-        fragTrans = null;
-        f = null;
 
         return true;
     }
