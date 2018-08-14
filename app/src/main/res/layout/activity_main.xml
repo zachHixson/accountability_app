@@ -35,28 +35,5 @@
             android:layout_weight="3"
             tools:layout="@layout/fragment_namelist" />
 
-        <!--Send/Receive Wrapper-->
-        <!--<LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="2"
-            android:weightSum="2">
-
-            <fragment
-                android:id="@+id/sendList"
-                android:name="com.example.zach.accountability.Fragment_SendList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:layout="@layout/fragment_sendlist" />
-
-            <fragment
-                android:id="@+id/requestList"
-                android:name="com.example.zach.accountability.Fragment_RequestList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@layout/fragment_requestlist" />
-        </LinearLayout>-->
     </LinearLayout>
 </LinearLayout>

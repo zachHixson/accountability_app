@@ -31,13 +31,6 @@
             android:src="@drawable/ic_add_new_item"
             android:tint="#000000"/>
 
-        <!--<ImageButton
-            android:id="@+id/requestButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_request"
-            android:tint="#000000"/>-->
-
     </LinearLayout>
 
 </LinearLayout>

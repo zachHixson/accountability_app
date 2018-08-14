@@ -11,33 +11,6 @@
         android:layout_height="match_parent"
         android:padding="7dp">
 
-        <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Room: "
-            android:id="@+id/textView" />-->
-
-        <!--<Spinner
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:id="@+id/roomSpinner"
-            android:entries="@array/rooms" />-->
-
-        <!--<ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_room"
-            android:tint="#009300"
-            android:contentDescription="Add Room" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_delete"
-            android:tint="#FF0000"
-            android:contentDescription="Remove Room" />-->
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

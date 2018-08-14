@@ -18,17 +18,6 @@ public class Fragment_TopBar extends Fragment{
         return rootView;
     }
 
-    /*public String getRoom(){
-        //Declare variables
-        String returnRoom;
-
-        //Set string to value of spinner
-        Spinner roomSpinner = (Spinner)getView().findViewById(R.id.roomSpinner);
-        returnRoom = roomSpinner.getSelectedItem().toString();
-
-        return returnRoom;
-    }*/
-
     public boolean updateRoomCount(int _count){
         //Update the count TextView to display new number
         TextView countText = (TextView)getView().findViewById(R.id.roomCount);
