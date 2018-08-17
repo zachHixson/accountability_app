@@ -266,9 +266,6 @@ public class ActivityMain extends AppCompatActivity {
         //Get the nameList fragment
         Fragment_NameList listFrag = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
         listFrag.updateList(_studentList, _currentRoom);
-
-        //clean up
-        listFrag = null;
     }
 
     //Removes name from list (calls function in sub-fragments to do the same)
