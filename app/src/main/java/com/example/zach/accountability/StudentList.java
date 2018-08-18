@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class StudentList {
-    private ArrayList<Student> StudentArray = new ArrayList<>();;
+    private ArrayList<Student> StudentArray = new ArrayList<>();
     private int RoomCount;
 
     public StudentList(){
@@ -62,6 +62,20 @@ public class StudentList {
 
     public Student GetStudent(int _id){
         return this.StudentArray.get(_id);
+    }
+
+    public ArrayList<Student> GetAddedStudents(){
+        ArrayList<Student> addedStudents = new ArrayList<>();
+
+        for (int i = 0; i < StudentArray.size(); i++){
+            Student curStdnt = this.StudentArray.get(i);
+
+            if (!curStdnt.GetRoom().equals("")){
+                addedStudents.add(curStdnt);
+            }
+        }
+
+        return addedStudents;
     }
 
     public void SetStudentRoom(int _id, String _room){
