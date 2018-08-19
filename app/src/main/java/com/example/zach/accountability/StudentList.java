@@ -78,6 +78,16 @@ public class StudentList {
         return addedStudents;
     }
 
+    public ArrayList<Student> GetAllStudents(){
+        ArrayList<Student> allStudents = new ArrayList<>();
+
+        for (int i = 0; i < StudentArray.size(); i++){
+            allStudents.add(this.StudentArray.get(i));
+        }
+
+        return allStudents;
+    }
+
     public void SetStudentRoom(int _id, String _room){
         this.StudentArray.get(_id).SetRoom(_room);
     }
