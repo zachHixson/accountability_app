@@ -26,6 +26,10 @@ public class NameList_Rem_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
         private AddViewHolder(View v){
             super(v);
 
+            //Disable add button
+            v.findViewById(R.id.addButton).setVisibility(View.GONE);
+
+            //Set remove button event listener
             remBtn = (ImageButton) v.findViewById(R.id.removeButton);
 
             remBtn.setOnClickListener(new View.OnClickListener(){

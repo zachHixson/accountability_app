@@ -4,24 +4,19 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mainList_RecyView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:id="@+id/nameList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        </LinearLayout>
-    </ScrollView>
+        android:layout_weight="10"
+        android:scrollbars="vertical" />
 
     <!--Add/Request Button Wrapper-->
     <LinearLayout
         android:id="@+id/buttonWrapper"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <ImageButton

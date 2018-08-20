@@ -106,6 +106,15 @@ public class Student {
         this.Id = _id;
     }
 
+    public boolean IsAdded(){
+        if (!this.GetRoom().equals("")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public boolean IsTemporary(){
         return this.IsTemporary;
     }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
-public class ActivityMain extends AppCompatActivity {
+public class ActivityMain extends AppCompatActivity implements Interface_ListEvents{
     //Create the main student list
     Settings appInfo = new Settings();
     ArrayList<String> actionHistory = new ArrayList<>();
@@ -27,16 +27,15 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GlobalStates.StudentList = new StudentList();
+        loadData();
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         appInfo.CurrentRoom = "main";
-
-        loadData();
     }
 
     @Override
@@ -81,11 +80,11 @@ public class ActivityMain extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id){
                         //Get the nameList fragment
                         Fragment_NameList listFrag = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
-                        listFrag.clearList();
+
                         appInfo.RoomCount = 0;
                         updateRoomCount(appInfo.RoomCount);
-
                         GlobalStates.StudentList.ClearList();
+                        listFrag.updateList(GlobalStates.StudentList);
                     }
                 });
                 alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
@@ -224,7 +223,7 @@ public class ActivityMain extends AppCompatActivity {
         //Load Previous Roster
         try{
             String rawJSON = openRoster(appInfo.LocalRosterName, false);
-            GlobalStates.StudentList = new StudentList();
+            GlobalStates.StudentList.DeleteStoredList();
             GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
             updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
         }catch (Exception e){
@@ -265,7 +264,11 @@ public class ActivityMain extends AppCompatActivity {
     public void updateScreenList(StudentList _studentList, String _currentRoom){ //Updates the names on the screen
         //Get the nameList fragment
         Fragment_NameList listFrag = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
-        listFrag.updateList(_studentList, _currentRoom);
+        listFrag.updateList(_studentList);
+    }
+
+    public boolean selectName(int _id){
+        return true;
     }
 
     //Removes name from list (calls function in sub-fragments to do the same)
@@ -289,11 +292,8 @@ public class ActivityMain extends AppCompatActivity {
             }
         }
 
-        //Call function in sub fragment
-        Fragment_NameList nameList = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
-        nameList.removeName(_id);
-
         saveData();
+        updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
 
         return true;
     }
