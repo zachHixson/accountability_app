@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 
-public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapter {
+public class NameList_Rem_RecyclerViewAdapter extends NameList_RecyclerViewAdapter {
 
-    public NameList_Add_RecyclerViewAdapter(StudentList inpStudentList, Context inpContext){
+    public NameList_Rem_RecyclerViewAdapter(StudentList inpStudentList, Context inpContext){
         super(inpStudentList, inpContext);
     }
 
@@ -21,14 +21,14 @@ public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
     }
 
     private class AddViewHolder extends ViewHolder{
-        private  ImageButton addBtn;
+        private  ImageButton remBtn;
 
         private AddViewHolder(View v){
             super(v);
 
-            addBtn = (ImageButton) v.findViewById(R.id.removeButton);
+            remBtn = (ImageButton) v.findViewById(R.id.removeButton);
 
-            addBtn.setOnClickListener(new View.OnClickListener(){
+            remBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
                     addRemBtnOnClick(v);
@@ -40,7 +40,7 @@ public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
             int     id           = getStudents().get(getAdapterPosition()).GetId();
             boolean isMrkdForDel = getStudents().get(getAdapterPosition()).IsMarkedForDeletion();
 
-            if (v.getId() == addBtn.getId()){
+            if (v.getId() == remBtn.getId()){
                 ((Interface_ListEvents)context).removeName(id, isMrkdForDel);
             }
         }
