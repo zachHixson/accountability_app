@@ -20,8 +20,21 @@ public class NameList_Rem_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
         return new AddViewHolder(v);
     }
 
+    public void updateFilter(StudentList inpStudentList){
+        this.students.clear();
+
+        for (int i = 0; i < inpStudentList.Size(); i++){
+            Student curStudent = inpStudentList.GetStudent(i);
+            if (!curStudent.GetRoom().equals("")){
+                this.students.add(curStudent);
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
     private class AddViewHolder extends ViewHolder{
-        private  ImageButton remBtn;
+        private ImageButton remBtn;
 
         private AddViewHolder(View v){
             super(v);
@@ -44,9 +57,7 @@ public class NameList_Rem_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
             int     id           = getStudents().get(getAdapterPosition()).GetId();
             boolean isMrkdForDel = getStudents().get(getAdapterPosition()).IsMarkedForDeletion();
 
-            if (v.getId() == remBtn.getId()){
-                ((Interface_ListEvents)context).removeName(id, isMrkdForDel);
-            }
+            ((Interface_ListEvents)context).removeName(id, isMrkdForDel);
         }
     }
 }

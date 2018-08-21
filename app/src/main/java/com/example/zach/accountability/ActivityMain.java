@@ -271,6 +271,10 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         return true;
     }
 
+    public boolean deselectName(int _id){
+        return true;
+    }
+
     //Removes name from list (calls function in sub-fragments to do the same)
     public boolean removeName(int _id, boolean _markForDeletion){
         //Find which student has the id

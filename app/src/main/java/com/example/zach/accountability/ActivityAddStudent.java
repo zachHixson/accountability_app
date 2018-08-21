@@ -6,6 +6,8 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.content.Intent;
@@ -18,17 +20,21 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
-public class ActivityAddStudent extends AppCompatActivity {
+public class ActivityAddStudent extends AppCompatActivity implements Interface_ListEvents{
     //Set Class variables
-    StudentList studentList = GlobalStates.StudentList;
-    ArrayList<Integer> idList = new ArrayList<>();
-    ArrayList<Integer> delTempIds = new ArrayList<>();
-    String currentRoom = GlobalStates.CurrentRoom;
+    StudentList                      studentList = GlobalStates.StudentList;
+    ArrayList<Integer>               idList = new ArrayList<>();
+    ArrayList<Integer>               delTempIds = new ArrayList<>();
+    String                           currentRoom = GlobalStates.CurrentRoom;
+    NameList_Add_RecyclerViewAdapter recycAdpt;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RecyclerView                     studentRecycView;
+        RecyclerView.LayoutManager       recycLayM;
+
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -43,23 +49,12 @@ public class ActivityAddStudent extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item){
                 switch (item.getItemId()){
                     case R.id.addOptSelectAll:
-                        //iterate through students and select them
-                        for (int i = 0; i < studentList.Size(); i++){
-                            //Make sure student is not already in room (therefor not in the list and will return a null
-                            if (!studentList.GetStudent(i).GetRoom().equals(currentRoom)) {
-                                Fragment_AddStudent addStudent = (Fragment_AddStudent) getSupportFragmentManager().findFragmentByTag(Integer.toString(i));
-                                addStudent.selectSelf();
-                            }
-                        }
+                        GlobalStates.StudentList.SetAllSelected(true);
+                        recycAdpt.notifyDataSetChanged();
                         return true;
                     case R.id.addOptDeselectAll:
-                        for (int i = 0; i < studentList.Size(); i++){
-                            //Make sure student is not already in room (therefor not in the list and will return a null
-                            if (!studentList.GetStudent(i).GetRoom().equals(currentRoom)) {
-                                Fragment_AddStudent addStudent = (Fragment_AddStudent) getSupportFragmentManager().findFragmentByTag(Integer.toString(i));
-                                addStudent.deselectSelf();
-                            }
-                        }
+                        GlobalStates.StudentList.SetAllSelected(false);
+                        recycAdpt.notifyDataSetChanged();
                         return true;
                     default:
                         return true;
@@ -69,8 +64,13 @@ public class ActivityAddStudent extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.add_student_menu);
         toolbar.setTitle(getString(R.string.AddStudentDialogTitle));
 
-        //Fill List
-        fillList(studentList);
+        //Set up recycler viewer
+        studentRecycView = (RecyclerView) findViewById(R.id.addList_RecyView);
+        recycLayM = new LinearLayoutManager(this);
+        recycAdpt = new NameList_Add_RecyclerViewAdapter(GlobalStates.StudentList, this);
+
+        studentRecycView.setLayoutManager(recycLayM);
+        studentRecycView.setAdapter(recycAdpt);
 
         //Create cancel button listener
         Button btnCancel = (Button)findViewById(R.id.addCancel);
@@ -127,60 +127,29 @@ public class ActivityAddStudent extends AppCompatActivity {
         View.OnClickListener btnOkOcl = new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //Prepare data for sending back to Main activity
+                /*//Prepare data for sending back to Main activity
                 Intent intent = new Intent();
                 intent.putExtra("idList", idList);
                 intent.putExtra("delTempIds", delTempIds);
                 setResult(RESULT_OK, intent);
 
                 //Finish and close activity
-                finish();
+                finish();*/
+
+                activityFinishOK();
             }
         };
 
         btnOk.setOnClickListener(btnOkOcl);
     }
 
-    public boolean fillList(StudentList _studentList){
-        Student student;
-        Bundle argBundle;
-
-        //Begin fragment transaction
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-
-        //Add all names to container
-        for (int i = 0; i < _studentList.Size(); i++){
-            //Set current student info
-            student = _studentList.GetStudent(i);
-
-            if (!student.GetRoom().equals(currentRoom) && !student.IsMarkedForDeletion()){
-                //Create new instance of fragment
-                Fragment_AddStudent studentFrag = new Fragment_AddStudent();
-
-                //Set arguments to pass down to fragment
-                argBundle = new Bundle();
-                argBundle.putInt("id", student.GetId());
-                studentFrag.setArguments(argBundle);
-
-                //add the fragment to listView
-                fragTrans.add(R.id.addList, studentFrag, Integer.toString(student.GetId()));
-                fragTrans.addToBackStack(null);
-            }
-        }
-
-        //Commit changes
-        fragTrans.commit();
-
-        return true;
-    }
-
-    public boolean selectStudent(int _id){
+    public boolean selectName(int _id){
         //Add student id to list
         idList.add(_id);
         return true;
     }
 
-    public boolean deselectStudent(int _id){
+    public boolean deselectName(int _id){
         //remove student id from list
         for (int i = 0; i < idList.size(); i++){
             if (idList.get(i) == _id){
@@ -203,7 +172,6 @@ public class ActivityAddStudent extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 //Remove student from list and mark for deletion
                 delTempIds.add(studentId);
-                removeName(studentId);
             }
         });
         alertDialogBuilder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
@@ -219,19 +187,38 @@ public class ActivityAddStudent extends AppCompatActivity {
         return true;
     }
 
-    public boolean removeName(int _id){
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-        fragTrans.remove(getSupportFragmentManager().findFragmentByTag(Integer.toString(_id)));
-        fragTrans.commit();
+    public boolean removeName(int _id, boolean _markForDeletion){
+        //
 
         return true;
     }
 
-    public boolean openInfoBox(String _text){
+    public boolean openInfoBox(String _title, String _text){
         //Open DialogCreator box
         DialogCreator dialogCreator = new DialogCreator(ActivityAddStudent.this);
         dialogCreator.CreateSimpleAlert(getString(R.string.InfoDialogTitle), _text.replace(";", "\n"));
 
         return true;
+    }
+
+    public void activityFinishOK(){
+        //Get Selected IDs
+        for (int i = 0; i < GlobalStates.StudentList.Size(); i++){
+            if (GlobalStates.StudentList.GetStudent(i).IsSelected()){
+                idList.add(GlobalStates.StudentList.GetStudent(i).GetId());
+
+                //deselect student
+                GlobalStates.StudentList.GetStudent(i).SetSelected(false);
+            }
+        }
+
+        //Prepare data for sending back to Main activity
+        Intent intent = new Intent();
+        intent.putExtra("idList", idList);
+        intent.putExtra("delTempIds", delTempIds);
+        setResult(RESULT_OK, intent);
+
+        //Finish and close activity
+        finish();
     }
 }

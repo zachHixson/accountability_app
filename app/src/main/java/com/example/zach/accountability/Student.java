@@ -16,6 +16,7 @@ public class Student {
     private int Id;
     private boolean IsTemporary;
     private boolean MarkedForDeletion;
+    private boolean IsSelected;
 
     public Student(JSONObject _jObj, int _id){
         try {
@@ -28,6 +29,7 @@ public class Student {
             this.Id = _id;
             this.IsTemporary = _jObj.getBoolean("isTemp");
             this.MarkedForDeletion = false;
+            this.IsSelected = false;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -43,6 +45,7 @@ public class Student {
         this.Id = _id;
         this.IsTemporary = false;
         this.MarkedForDeletion = false;
+        this.IsSelected = false;
     }
 
     public Student(String _firstName, String _lastName, String _room, int _id){
@@ -55,6 +58,7 @@ public class Student {
         this.Id = _id;
         this.IsTemporary = true;
         this.MarkedForDeletion = false;
+        this.IsSelected = false;
     }
 
     public Student() {
@@ -67,6 +71,7 @@ public class Student {
         this.Id = -1;
         this.IsTemporary = true;
         this.MarkedForDeletion = true;
+        this.IsSelected = false;
     }
 
     public String GetFirstName(){
@@ -137,6 +142,14 @@ public class Student {
         }
 
         return false;
+    }
+
+    public boolean IsSelected(){
+        return this.IsSelected;
+    }
+
+    public void SetSelected(boolean status){
+        this.IsSelected = status;
     }
 
     public JSONObject ToJSONObj(){

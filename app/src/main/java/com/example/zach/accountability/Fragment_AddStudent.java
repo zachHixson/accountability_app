@@ -78,7 +78,7 @@ public class Fragment_AddStudent extends Fragment{
             @Override
             public void onClick(View view){
                 String infoBoxContent = String.format("%1$s", thisStudent.GetInfo());
-                ((ActivityAddStudent)getActivity()).openInfoBox(infoBoxContent);
+                //((ActivityAddStudent)getActivity()).openInfoBox(infoBoxContent);
             }
         };
 
@@ -102,7 +102,7 @@ public class Fragment_AddStudent extends Fragment{
 
     public void deselectSelf(){
         selected = false;
-        ((ActivityAddStudent)getActivity()).deselectStudent(thisStudent.GetId());
+        //((ActivityAddStudent)getActivity()).deselectStudent(thisStudent.GetId());
 
         //Change background color
         LinearLayout thisLayout = (LinearLayout)mainRootView.findViewById(R.id.itemLayout);
@@ -111,7 +111,7 @@ public class Fragment_AddStudent extends Fragment{
 
     public void selectSelf(){
         selected = true;
-        ((ActivityAddStudent)getActivity()).selectStudent(thisStudent.GetId());
+        //((ActivityAddStudent)getActivity()).selectStudent(thisStudent.GetId());
 
         //Change background color
         LinearLayout thisLayout = (LinearLayout)mainRootView.findViewById(R.id.itemLayout);

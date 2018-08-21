@@ -17,13 +17,14 @@ import java.util.ArrayList;
 import android.util.Log;
 
 public class Fragment_NameList extends Fragment{
-    private RecyclerView                 studentRecycView;
-    private RecyclerView.LayoutManager   recycLayM;
-    private NameList_RecyclerViewAdapter recycAdpt;
+    private NameList_Rem_RecyclerViewAdapter recycAdpt;
     boolean isPaused = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        RecyclerView                 studentRecycView;
+        RecyclerView.LayoutManager   recycLayM;
+
         View returnView = inflater.inflate(R.layout.fragment_namelist, container, false);
 
         studentRecycView = (RecyclerView) returnView.findViewById(R.id.mainList_RecyView);

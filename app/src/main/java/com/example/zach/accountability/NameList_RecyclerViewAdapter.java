@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import java.util.ArrayList;
 import android.util.Log;
 
 public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<NameList_RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Student> students;
-    public Context            context;
+    protected ArrayList<Student> students;
+    protected Context             context;
 
     public NameList_RecyclerViewAdapter(StudentList inpStudentList, Context inpContext){
         students = new ArrayList<>();
@@ -31,6 +32,14 @@ public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<
         Student student = students.get(position);
         holder.fName.setText(student.GetFirstName());
         holder.lName.setText(student.GetLastName());
+
+        //Change background color
+        if (student.IsSelected()){
+            holder.layout.setBackgroundColor(Color.parseColor("#62D1FF"));
+        }
+        else{
+            holder.layout.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+        }
 
         //Hide appropriate buttons
         if (!student.IsTemporary()){
@@ -55,11 +64,7 @@ public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<
 
     public abstract NameList_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
 
-    public void updateFilter(StudentList inpStudentList){
-        this.students.clear();
-        this.students = inpStudentList.GetAddedStudents();
-        notifyDataSetChanged();
-    }
+    public abstract void updateFilter(StudentList inpStudentList);
 
     public abstract class ViewHolder extends RecyclerView.ViewHolder {
         private TextView    fName;
