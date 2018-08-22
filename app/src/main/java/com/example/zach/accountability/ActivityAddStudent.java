@@ -78,44 +78,7 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
         View.OnClickListener btnCancelOcl = new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //Make sure they want to cancel
-                if (idList.size() > 0) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ActivityAddStudent.this);
-                    alertDialogBuilder.setTitle(getString(R.string.AreYouSure));
-                    alertDialogBuilder.setMessage(getString(R.string.ClearListConfirm));
-                    alertDialogBuilder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            //Prepare data for sending back to Main activity
-                            Intent intent = new Intent();
-                            intent.putExtra("idList", new ArrayList<Integer>()); //Because the user clicked cancel, we are sending back an empty list
-                            intent.putExtra("delTempIds", delTempIds);
-                            setResult(RESULT_OK, intent);
-
-                            //Finish and close activity
-                            finish();
-                        }
-                    });
-                    alertDialogBuilder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-                else {
-                    //Prepare data for sending back to Main activity
-                    Intent intent = new Intent();
-                    intent.putExtra("idList", new ArrayList<Integer>()); //Because the user clicked cancel, we are sending back an empty list
-                    intent.putExtra("delTempIds", delTempIds);
-                    setResult(RESULT_OK, intent);
-
-                    //Finish and close activity
-                    finish();
-                }
+                activityFinishCancel();
             }
         };
 
@@ -127,15 +90,6 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
         View.OnClickListener btnOkOcl = new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                /*//Prepare data for sending back to Main activity
-                Intent intent = new Intent();
-                intent.putExtra("idList", idList);
-                intent.putExtra("delTempIds", delTempIds);
-                setResult(RESULT_OK, intent);
-
-                //Finish and close activity
-                finish();*/
-
                 activityFinishOK();
             }
         };
@@ -202,6 +156,37 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
     }
 
     public void activityFinishOK(){
+        finishWithIntent(idList, delTempIds);
+    }
+
+    public void activityFinishCancel(){
+        //Make sure they want to cancel
+        if (idList.size() > 0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ActivityAddStudent.this);
+            alertDialogBuilder.setTitle(getString(R.string.AreYouSure));
+            alertDialogBuilder.setMessage(getString(R.string.ClearListConfirm));
+            alertDialogBuilder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    finishWithIntent(new ArrayList<Integer>(), delTempIds);
+                }
+            });
+            alertDialogBuilder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+        else {
+            finishWithIntent(new ArrayList<Integer>(), delTempIds);
+        }
+    }
+
+    public void finishWithIntent(ArrayList<Integer> inpIdList, ArrayList<Integer> inpDelTempIds){
         //Get Selected IDs
         for (int i = 0; i < GlobalStates.StudentList.Size(); i++){
             if (GlobalStates.StudentList.GetStudent(i).IsSelected()){
@@ -214,8 +199,8 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
 
         //Prepare data for sending back to Main activity
         Intent intent = new Intent();
-        intent.putExtra("idList", idList);
-        intent.putExtra("delTempIds", delTempIds);
+        intent.putExtra("idList", inpIdList);
+        intent.putExtra("delTempIds", inpDelTempIds);
         setResult(RESULT_OK, intent);
 
         //Finish and close activity
