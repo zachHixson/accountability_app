@@ -8,8 +8,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class StudentList {
-    private ArrayList<Student> StudentArray = new ArrayList<>();;
-    private int RoomCount;
+    private ArrayList<Student> StudentArray = new ArrayList<>();
+    private int                RoomCount;
 
     public StudentList(){
         this.RoomCount = 0;
@@ -17,7 +17,7 @@ public class StudentList {
 
     public void PopulateFromJSONString(String _jsonString){
         try{
-            JSONArray mainArray;
+            JSONArray  mainArray;
             JSONObject studentObj;
 
             mainArray = new JSONArray(_jsonString);
@@ -39,8 +39,8 @@ public class StudentList {
 
     public String ToJSONString(){
         JSONArray jsonArray = new JSONArray();
-        Student currentStudent;
-        String returnString = "";
+        Student   currentStudent;
+        String    returnString = "";
 
         for (int i = 0; i < this.StudentArray.size(); i++){
             currentStudent = this.StudentArray.get(i);
@@ -66,6 +66,12 @@ public class StudentList {
 
     public void SetStudentRoom(int _id, String _room){
         this.StudentArray.get(_id).SetRoom(_room);
+    }
+
+    public void SetAllSelected(boolean newStatus){
+        for (int i = 0; i < this.StudentArray.size(); i++){
+            StudentArray.get(i).SetSelected(newStatus);
+        }
     }
 
     //Clears list of all students in the current room

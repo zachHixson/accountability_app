@@ -1,23 +1,38 @@
 package com.example.zach.accountability;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ImageButton;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+import android.util.Log;
 
 public class Fragment_NameList extends Fragment{
+    private NameList_Rem_RecyclerViewAdapter recycAdpt;
     boolean isPaused = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        RecyclerView                 studentRecycView;
+        RecyclerView.LayoutManager   recycLayM;
+
         View returnView = inflater.inflate(R.layout.fragment_namelist, container, false);
+
+        studentRecycView = (RecyclerView) returnView.findViewById(R.id.mainList_RecyView);
+        recycLayM = new LinearLayoutManager(this.getActivity());
+        recycAdpt = new NameList_Rem_RecyclerViewAdapter(GlobalStates.StudentList, getContext());
+
+        studentRecycView.setLayoutManager(recycLayM);
+        studentRecycView.setAdapter(recycAdpt);
 
         //Create onclick listener for add students button
         ImageButton btnAdd = (ImageButton)returnView.findViewById(R.id.addButton);
@@ -38,73 +53,8 @@ public class Fragment_NameList extends Fragment{
         return returnView;
     }
 
-    public boolean updateList(StudentList _studentList, String _currentRoom){
-        //Define Variables
-        Student student;
-        String currentRoom = _currentRoom;
-        Bundle argBundle;
-
-        //Clear list from before
-        clearList();
-
-        //Begin Fragment transaction
-        FragmentTransaction fragTrans = getFragmentManager().beginTransaction();
-
-        //Replace contents of the container with list of student fragments
-        for (int i = 0; i < _studentList.Size(); i++){
-            //Set current student info
-            student = _studentList.GetStudent(i);
-
-
-            //Only create fragment for display if student is in the room
-            if(student.GetRoom().equals(currentRoom)) {
-                //create new instance of fragment
-                Fragment_Student studentFrag = new Fragment_Student();
-
-                //Set arguments to pass down to fragment
-                argBundle = new Bundle();
-                argBundle.putInt("id", student.GetId());
-                studentFrag.setArguments(argBundle);
-
-                //add the fragment to the listView
-                fragTrans.add(R.id.nameList, studentFrag, Integer.toString(student.GetId()));
-                fragTrans.addToBackStack(null);
-            }
-        }
-
-        //Commit changes to fragment
-        fragTrans.commit();
-
-
-        return true;
-    }
-
-    //Clear all names from list
-    public boolean clearList(){
-        try {
-            LinearLayout nameHolder = (LinearLayout) getView().findViewById(R.id.nameList);
-
-            if (((LinearLayout) nameHolder).getChildCount() > 0) {
-                ((LinearLayout) nameHolder).removeAllViews();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return true;
-    }
-
-    public boolean removeName(Integer _id){
-        FragmentTransaction fragTrans = getFragmentManager().beginTransaction();
-
-        //Check to see if fragment exists
-        Fragment_Student f = (Fragment_Student) getFragmentManager().findFragmentByTag(Integer.toString(_id));
-
-        if (f != null) {
-            fragTrans.remove(f);
-            fragTrans.commit();
-        }
-
+    public boolean updateList(StudentList _studentList){
+        recycAdpt.updateFilter(_studentList);
         return true;
     }
 
