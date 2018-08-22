@@ -91,7 +91,7 @@ public class Fragment_AddStudent extends Fragment{
             @Override
             public  void onClick(View view){
                 deselectSelf();
-                ((ActivityAddStudent)getActivity()).deleteTemp(thisStudent.GetId());
+                //((ActivityAddStudent)getActivity()).deleteTemp(thisStudent.GetId());
             }
         };
 

@@ -114,35 +114,14 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
         return true;
     }
 
-    public boolean deleteTemp(int _id) {
-        //Get argument
-        final int studentId = _id;
-
-        //Display Alert dialog confirming deletion
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ActivityAddStudent.this);
-        alertDialogBuilder.setTitle(getString(R.string.DeleteTempStudentConfirmDialogTitle));
-        alertDialogBuilder.setMessage(getString(R.string.DeleteTempStudentConfirm));
-        alertDialogBuilder.setPositiveButton(getString(R.string.Delete), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //Remove student from list and mark for deletion
-                delTempIds.add(studentId);
-            }
-        });
-        alertDialogBuilder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //Cancel Dialog
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-        return true;
-    }
-
     public boolean removeName(int _id, boolean _markForDeletion){
-        //
+
+        if (_markForDeletion) {
+            GlobalStates.StudentList.GetStudent(_id).MarkForDeletion();
+            deselectName(_id);
+        }
+
+        recycAdpt.updateFilter(GlobalStates.StudentList);
 
         return true;
     }
@@ -187,15 +166,7 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
     }
 
     public void finishWithIntent(ArrayList<Integer> inpIdList, ArrayList<Integer> inpDelTempIds){
-        //Get Selected IDs
-        for (int i = 0; i < GlobalStates.StudentList.Size(); i++){
-            if (GlobalStates.StudentList.GetStudent(i).IsSelected()){
-                idList.add(GlobalStates.StudentList.GetStudent(i).GetId());
-
-                //deselect student
-                GlobalStates.StudentList.GetStudent(i).SetSelected(false);
-            }
-        }
+        GlobalStates.StudentList.SetAllSelected(false);
 
         //Prepare data for sending back to Main activity
         Intent intent = new Intent();

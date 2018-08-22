@@ -10,11 +10,9 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapter {
-    private ArrayList<Integer> selectedIds;
 
     public NameList_Add_RecyclerViewAdapter(StudentList inpStudentList, Context inpContext){
         super(inpStudentList, inpContext);
-        selectedIds = new ArrayList<>();
     }
 
     public NameList_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -30,7 +28,7 @@ public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
 
         for (int i = 0; i < inpStudentList.Size(); i++){
             Student curStudent = inpStudentList.GetStudent(i);
-            if (curStudent.GetRoom().equals("")){
+            if (curStudent.GetRoom().equals("") && !curStudent.IsMarkedForDeletion()){
                 this.students.add(curStudent);
             }
         }
