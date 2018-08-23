@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,8 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.zach.accountability.R;
 
 public class Fragment_TopBar extends Fragment{
 

@@ -13,7 +13,7 @@
     <!--Top Bar-->
     <fragment
         android:id="@+id/topBar"
-        android:name="com.example.zach.accountability.Fragment_TopBar"
+        android:name="com.example.zach.accountability.Fragments.Fragment_TopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_topbar" />
@@ -29,7 +29,7 @@
         <!--Name List-->
         <fragment
             android:id="@+id/nameListWrapper"
-            android:name="com.example.zach.accountability.Fragment_NameList"
+            android:name="com.example.zach.accountability.Fragments.Fragment_NameList"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"

@@ -5,7 +5,6 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +16,12 @@ import android.widget.EditText;
 import java.io.File;
 import java.util.ArrayList;
 
-import android.util.Log;
+import com.example.zach.accountability.Fragments.Fragment_NameList;
+import com.example.zach.accountability.Fragments.Fragment_TopBar;
+import com.example.zach.accountability.Interfaces.Interface_ListEvents;
+import com.example.zach.accountability.Interfaces.Interface_MainListEvents;
 
-public class ActivityMain extends AppCompatActivity implements Interface_ListEvents{
+public class ActivityMain extends AppCompatActivity implements Interface_ListEvents, Interface_MainListEvents {
     //Create the main student list
     Settings appInfo = new Settings();
     ArrayList<String> actionHistory = new ArrayList<>();

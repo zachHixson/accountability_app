@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 
-import com.example.zach.accountability.Interface_ListEvents;
+import com.example.zach.accountability.Interfaces.Interface_ListEvents;
 import com.example.zach.accountability.R;
 import com.example.zach.accountability.Student;
 import com.example.zach.accountability.StudentList;

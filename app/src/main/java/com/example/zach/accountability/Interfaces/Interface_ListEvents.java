@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Interfaces;
 
 public interface Interface_ListEvents {
     boolean removeName(int _id, boolean _markForDeletion);
