@@ -1,6 +1,5 @@
 package com.example.zach.accountability.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,10 +11,10 @@ import android.widget.ImageButton;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.zach.accountability.ActivityMain;
-import com.example.zach.accountability.GlobalStates;
+import com.example.zach.accountability.Data_Structures.GlobalStates;
 import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Rem_RecyclerViewAdapter;
 import com.example.zach.accountability.R;
-import com.example.zach.accountability.StudentList;
+import com.example.zach.accountability.Data_Structures.StudentList;
 import com.example.zach.accountability.Interfaces.Interface_MainListEvents;
 
 public class Fragment_NameList extends Fragment{

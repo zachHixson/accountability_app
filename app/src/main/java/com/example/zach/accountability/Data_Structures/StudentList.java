@@ -1,6 +1,4 @@
-package com.example.zach.accountability;
-
-import android.util.Log;
+package com.example.zach.accountability.Data_Structures;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

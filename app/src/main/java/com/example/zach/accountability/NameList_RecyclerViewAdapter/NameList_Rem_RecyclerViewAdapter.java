@@ -8,8 +8,8 @@ import android.widget.ImageButton;
 
 import com.example.zach.accountability.Interfaces.Interface_ListEvents;
 import com.example.zach.accountability.R;
-import com.example.zach.accountability.Student;
-import com.example.zach.accountability.StudentList;
+import com.example.zach.accountability.Data_Structures.Student;
+import com.example.zach.accountability.Data_Structures.StudentList;
 
 public class NameList_Rem_RecyclerViewAdapter extends NameList_RecyclerViewAdapter {
 

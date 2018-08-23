@@ -16,6 +16,9 @@ import android.widget.EditText;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.example.zach.accountability.Data_Structures.GlobalStates;
+import com.example.zach.accountability.Data_Structures.Settings;
+import com.example.zach.accountability.Data_Structures.StudentList;
 import com.example.zach.accountability.Fragments.Fragment_NameList;
 import com.example.zach.accountability.Fragments.Fragment_TopBar;
 import com.example.zach.accountability.IO.FileIO;

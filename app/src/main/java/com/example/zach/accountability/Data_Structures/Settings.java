@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Data_Structures;
 
 /*
 This class declares global settings for the app for all other classes to use

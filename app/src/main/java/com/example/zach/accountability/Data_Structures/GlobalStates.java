@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Data_Structures;
 
 /*
     Holds all global data that persists throughout the app

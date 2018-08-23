@@ -1,6 +1,6 @@
 package com.example.zach.accountability.IO;
 
-import com.example.zach.accountability.Student;
+import com.example.zach.accountability.Data_Structures.Student;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
