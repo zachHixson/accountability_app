@@ -88,10 +88,8 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                     public void onClick(DialogInterface dialog, int id){
                         //Get the nameList fragment
                         Fragment_NameList listFrag = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
-
-                        appInfo.RoomCount = 0;
-                        updateRoomCount(appInfo.RoomCount);
                         GlobalStates.StudentList.ClearList();
+                        updateRoomCount(GlobalStates.StudentList);
                         listFrag.updateList(GlobalStates.StudentList);
                     }
                 });
@@ -202,8 +200,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                 //Remove and mark all names in delTempIds for deletion
                 for (int i = 0; i < delTempIds.size(); i++){
                     removeName(delTempIds.get(i), true);
-                    appInfo.RoomCount += 1; //When you remove a name, it automatically takes one away from the count (but we didn't remove from the room) This puts it back
-                    updateRoomCount(appInfo.RoomCount);
+                    updateRoomCount(GlobalStates.StudentList);
                 }
 
                 //un-pause the list
@@ -223,7 +220,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
             String rawSettings = fileIO.OpenLocalFile(appInfo.LocalSettingsName);
             appInfo.LoadJSON(rawSettings);
             GlobalStates.CurrentRoom = appInfo.CurrentRoom;
-            updateRoomCount(appInfo.RoomCount);
+            updateRoomCount(GlobalStates.StudentList);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -295,9 +292,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                     GlobalStates.StudentList.GetStudent(i).MarkForDeletion();
                 }
 
-                //Subtract one from the roomCount
-                appInfo.RoomCount -= 1;
-                updateRoomCount(appInfo.RoomCount);
+                updateRoomCount(GlobalStates.StudentList);
 
                 //Add action to history
                 addToHistory(this.getString(R.string.HistoryRemoved), String.format("%1$s %2$s", GlobalStates.StudentList.GetStudent(i).GetFirstName(), GlobalStates.StudentList.GetStudent(i).GetLastName()));
@@ -320,8 +315,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
             _studentList.GetStudent(_id.get(ids)).SetRoom(_currentRoom);
 
             //Add student to room
-            appInfo.RoomCount += 1;
-            updateRoomCount(appInfo.RoomCount);
+            updateRoomCount(GlobalStates.StudentList);
             if (historySteps == 0) {
                 historyContent += String.format("%1$s %2$s", _studentList.GetStudent(_id.get(ids)).GetFirstName(), _studentList.GetStudent(_id.get(ids)).GetLastName());
             }
@@ -347,10 +341,18 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         return appInfo.CurrentRoom;
     }
 
-    public boolean updateRoomCount(int _count){
+    public boolean updateRoomCount(StudentList inpStudentList){
+        appInfo.RoomCount = 0;
+
+        for (int i = 0; i < inpStudentList.Size(); i++){
+            if (inpStudentList.GetStudent(i).IsAdded()){
+                appInfo.RoomCount++;
+            }
+        }
+
         //Call method in TopBar sub-fragment
         Fragment_TopBar topBar = (Fragment_TopBar)getSupportFragmentManager().findFragmentById(R.id.topBar);
-        topBar.updateRoomCount(_count);
+        topBar.updateRoomCount(appInfo.RoomCount);
 
         return true;
     }
