@@ -20,7 +20,7 @@ public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
     public NameList_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         //create a new view
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.fragment_student, parent, false);
+        View v = inflater.inflate(R.layout.student_tile, parent, false);
 
         return new AddViewHolder(v);
     }
