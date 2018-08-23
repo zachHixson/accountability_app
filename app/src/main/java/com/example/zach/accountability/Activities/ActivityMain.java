@@ -38,6 +38,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         GlobalStates.StudentList = new StudentList();
         loadData();
         setContentView(R.layout.activity_main);
+        updateRoomCount(GlobalStates.StudentList);
     }
 
     @Override
@@ -62,6 +63,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     protected void onRestart() {
         super.onRestart();
         loadData();
+        updateRoomCount(GlobalStates.StudentList);
     }
 
     @Override
