@@ -1,0 +1,12 @@
+v3_0_0
+
+Major Changes:
+- Fragment View to recyclerview
+    - This fixed memory leak issue
+- Student View tile layout is updated to support smaller screens
+
+Minor changes:
+- Removed depricated code
+- Moved files into packages
+- infoBox now breaks on "; "
+- fragment_student is now named student_tile
