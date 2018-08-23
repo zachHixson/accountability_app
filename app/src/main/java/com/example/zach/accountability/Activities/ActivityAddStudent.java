@@ -149,7 +149,7 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
     public boolean openInfoBox(String _title, String _text){
         //Open DialogCreator box
         DialogCreator dialogCreator = new DialogCreator(ActivityAddStudent.this);
-        dialogCreator.CreateSimpleAlert(getString(R.string.InfoDialogTitle), _text.replace(";", "\n"));
+        dialogCreator.CreateSimpleAlert(getString(R.string.InfoDialogTitle), _text.replace("; ", "\n"));
 
         return true;
     }
