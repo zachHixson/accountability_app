@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -34,8 +35,13 @@ public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<
         // - Get element from dataset at this position
         // - Replace the contents of the view with that element position
         Student student = students.get(position);
-        holder.fName.setText(student.GetFirstName());
-        holder.lName.setText(student.GetLastName());
+        String fName = student.GetFirstName();
+        String lName = student.GetLastName();
+        Layout layout = holder.nameRight.getLayout();
+
+        //Set text
+        holder.nameLeft.setText(lName);
+        holder.nameRight.setText(fName);
 
         //Change background color
         if (student.IsSelected()){
@@ -71,8 +77,8 @@ public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<
     public abstract void updateFilter(StudentList inpStudentList);
 
     public abstract class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView    fName;
-        private TextView    lName;
+        private TextView    nameLeft;
+        private TextView    nameRight;
         public  ImageButton delTempBtn;
         public  ImageButton infoBtn;
         public  View        layout;
@@ -81,8 +87,8 @@ public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<
             super(v);
             layout = v;
 
-            fName = (TextView) v.findViewById(R.id.firstName);
-            lName = (TextView) v.findViewById(R.id.lastName);
+            nameLeft = (TextView) v.findViewById(R.id.nameLeft);
+            nameRight = (TextView) v.findViewById(R.id.nameRight);
             delTempBtn = (ImageButton) v.findViewById(R.id.deleteTempButton);
             infoBtn = (ImageButton) v.findViewById(R.id.infoButton);
 
