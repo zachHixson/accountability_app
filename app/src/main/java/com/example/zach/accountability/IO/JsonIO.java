@@ -1,4 +1,6 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.IO;
+
+import com.example.zach.accountability.Student;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
