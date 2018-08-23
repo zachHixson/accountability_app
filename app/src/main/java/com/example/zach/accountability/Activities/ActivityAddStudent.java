@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Activities;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import com.example.zach.accountability.Data_Structures.GlobalStates;
 import com.example.zach.accountability.Data_Structures.StudentList;
 import com.example.zach.accountability.Interfaces.Interface_ListEvents;
+import com.example.zach.accountability.Misc.DialogCreator;
 import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Add_RecyclerViewAdapter;
+import com.example.zach.accountability.R;
 
 public class ActivityAddStudent extends AppCompatActivity implements Interface_ListEvents{
     //Set Class variables

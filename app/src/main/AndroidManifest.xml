@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:name=".Data_Structures.GlobalStates">
 
-        <activity android:name=".ActivityMain"
+        <activity android:name=".Activities.ActivityMain"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ActivityAddStudent"
+        <activity android:name=".Activities.ActivityAddStudent"
                   android:theme="@style/AppTheme.AddStudentTheme"
                   android:screenOrientation="portrait"></activity>
 

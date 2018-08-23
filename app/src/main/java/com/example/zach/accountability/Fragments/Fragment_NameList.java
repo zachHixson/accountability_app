@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.zach.accountability.ActivityMain;
+import com.example.zach.accountability.Activities.ActivityMain;
 import com.example.zach.accountability.Data_Structures.GlobalStates;
 import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Rem_RecyclerViewAdapter;
 import com.example.zach.accountability.R;

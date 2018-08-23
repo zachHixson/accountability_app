@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Misc;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;

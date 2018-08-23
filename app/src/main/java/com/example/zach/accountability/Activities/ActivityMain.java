@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.Activities;
 
 import android.content.DialogInterface;
 import android.os.Environment;
@@ -24,6 +24,8 @@ import com.example.zach.accountability.Fragments.Fragment_TopBar;
 import com.example.zach.accountability.IO.FileIO;
 import com.example.zach.accountability.Interfaces.Interface_ListEvents;
 import com.example.zach.accountability.Interfaces.Interface_MainListEvents;
+import com.example.zach.accountability.Misc.DialogCreator;
+import com.example.zach.accountability.R;
 
 public class ActivityMain extends AppCompatActivity implements Interface_ListEvents, Interface_MainListEvents {
     //Create the main student list
