@@ -1,6 +1,7 @@
 package com.example.zach.accountability.Activities;
 
 import android.content.DialogInterface;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,11 +52,11 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
             public boolean onMenuItemClick(MenuItem item){
                 switch (item.getItemId()){
                     case R.id.addOptSelectAll:
-                        GlobalStates.StudentList.SetAllSelected(true);
+                        selectAll(GlobalStates.StudentList);
                         recycAdpt.notifyDataSetChanged();
                         return true;
                     case R.id.addOptDeselectAll:
-                        GlobalStates.StudentList.SetAllSelected(false);
+                        deselectAll(GlobalStates.StudentList);
                         recycAdpt.notifyDataSetChanged();
                         return true;
                     default:
@@ -105,6 +106,16 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
         return true;
     }
 
+    public boolean selectAll(StudentList inpStudentList){
+        inpStudentList.SetAllSelected(true);
+
+        for (int i = 0; i < inpStudentList.Size(); i++){
+            idList.add(inpStudentList.GetStudent(i).GetId());
+        }
+
+        return true;
+    }
+
     public boolean deselectName(int _id){
         //remove student id from list
         for (int i = 0; i < idList.size(); i++){
@@ -112,6 +123,13 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
                 idList.remove(i);
             }
         }
+
+        return true;
+    }
+
+    public boolean deselectAll(StudentList inpStudentList){
+        inpStudentList.SetAllSelected(false);
+        idList.clear();
 
         return true;
     }
