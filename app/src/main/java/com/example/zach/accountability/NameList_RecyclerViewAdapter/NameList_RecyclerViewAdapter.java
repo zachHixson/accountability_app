@@ -1,4 +1,4 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.NameList_RecyclerViewAdapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +11,11 @@ import android.widget.TextView;
 import android.graphics.Color;
 
 import java.util.ArrayList;
-import android.util.Log;
+
+import com.example.zach.accountability.Interface_ListEvents;
+import com.example.zach.accountability.R;
+import com.example.zach.accountability.Student;
+import com.example.zach.accountability.StudentList;
 
 public abstract class NameList_RecyclerViewAdapter extends RecyclerView.Adapter<NameList_RecyclerViewAdapter.ViewHolder> {
 

@@ -1,10 +1,15 @@
-package com.example.zach.accountability;
+package com.example.zach.accountability.NameList_RecyclerViewAdapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
+
+import com.example.zach.accountability.Interface_ListEvents;
+import com.example.zach.accountability.R;
+import com.example.zach.accountability.Student;
+import com.example.zach.accountability.StudentList;
 
 public class NameList_Rem_RecyclerViewAdapter extends NameList_RecyclerViewAdapter {
 

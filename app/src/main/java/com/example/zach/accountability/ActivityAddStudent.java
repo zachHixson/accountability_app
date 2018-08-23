@@ -1,9 +1,6 @@
 package com.example.zach.accountability;
 
 import android.content.DialogInterface;
-import android.provider.*;
-import android.provider.Settings;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +15,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-import android.util.Log;
+import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Add_RecyclerViewAdapter;
 
 public class ActivityAddStudent extends AppCompatActivity implements Interface_ListEvents{
     //Set Class variables

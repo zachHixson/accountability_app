@@ -1,20 +1,16 @@
 package com.example.zach.accountability;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ImageButton;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.ArrayList;
-import android.util.Log;
+import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Rem_RecyclerViewAdapter;
 
 public class Fragment_NameList extends Fragment{
     private NameList_Rem_RecyclerViewAdapter recycAdpt;
