@@ -1,0 +1,7 @@
+v3_0_1
+
+Major Changes:
+- Fixed Deselect Bug
+
+Minor changes:
+- None
