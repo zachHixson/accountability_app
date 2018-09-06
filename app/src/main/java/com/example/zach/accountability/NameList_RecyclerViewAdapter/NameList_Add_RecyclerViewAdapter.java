@@ -67,7 +67,7 @@ public class NameList_Add_RecyclerViewAdapter extends NameList_RecyclerViewAdapt
                 ((Interface_ListEvents) context).selectName(id);
             }
             else{
-                students.get(id).SetSelected(false);
+                students.get(aptPos).SetSelected(false);
                 ((Interface_ListEvents) context).deselectName(id);
             }
 
