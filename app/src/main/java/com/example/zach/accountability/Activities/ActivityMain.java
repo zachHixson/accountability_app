@@ -384,7 +384,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     public boolean openInfoBox(String _title, String _text){
         //Open DialogCreator box
         DialogCreator dialogCreator = new DialogCreator(ActivityMain.this);
-        dialogCreator.CreateSimpleAlert(getString(R.string.InfoDialogTitle), _text.replace("; ", "\n"));
+        dialogCreator.CreateSimpleAlert(_title, _text.replace("; ", "\n"));
 
         return true;
     }
