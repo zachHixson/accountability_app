@@ -25,7 +25,7 @@ public class Student {
             this.Id = _id;
             this.IsTemporary = _jObj.getBoolean("isTemp");
             this.MarkedForDeletion = false;
-            this.IsSelected = false;
+            this.IsSelected = _jObj.getBoolean("isSelected");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -132,6 +132,7 @@ public class Student {
             jObj.put("allergies", this.Info);
             jObj.put("room", this.Room);
             jObj.put("isTemp", this.IsTemporary);
+            jObj.put("isSelected", this.IsSelected);
         }catch (Exception e){
             e.printStackTrace();
         }
