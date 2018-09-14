@@ -5,13 +5,17 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,12 +29,15 @@ import com.example.zach.accountability.IO.FileIO;
 import com.example.zach.accountability.Interfaces.Interface_ListEvents;
 import com.example.zach.accountability.Interfaces.Interface_MainListEvents;
 import com.example.zach.accountability.Misc.DialogCreator;
+import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Rem_RecyclerViewAdapter;
 import com.example.zach.accountability.R;
 
 public class ActivityMain extends AppCompatActivity implements Interface_ListEvents, Interface_MainListEvents {
     //Create the main student list
     Settings appInfo = new Settings();
     ArrayList<String> actionHistory = new ArrayList<>();
+
+    private NameList_Rem_RecyclerViewAdapter recycAdpt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +46,22 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         loadData();
         setContentView(R.layout.activity_main);
         updateRoomCount(GlobalStates.StudentList);
+
+        ImageButton btnAddStdnts = (ImageButton)findViewById(R.id.addButton);
+
+        btnAddStdnts.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                openAddMenu();
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         appInfo.CurrentRoom = "main";
+        initViewList();
     }
 
     @Override
@@ -89,10 +106,9 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                 alertDialogBuilder.setPositiveButton(this.getString(R.string.Ok), new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         //Get the nameList fragment
-                        Fragment_NameList listFrag = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
                         GlobalStates.StudentList.ClearList();
                         updateRoomCount(GlobalStates.StudentList);
-                        listFrag.updateList(GlobalStates.StudentList);
+                        recycAdpt.updateFilter(GlobalStates.StudentList);
                     }
                 });
                 alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
@@ -132,7 +148,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                         ArrayList<Integer> singleId = new ArrayList<Integer>();
                         singleId.add(GlobalStates.StudentList.Size() - 1);
                         addStudentsToRoom(singleId, GlobalStates.StudentList, appInfo.CurrentRoom);
-                        updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
+                        recycAdpt.updateFilter(GlobalStates.StudentList);
                     }
                 });
                 alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
@@ -205,13 +221,21 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                     updateRoomCount(GlobalStates.StudentList);
                 }
 
-                //un-pause the list
-                Fragment_NameList nameList = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
-                nameList.setPaused(false);
-
-                updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
+                recycAdpt.updateFilter(GlobalStates.StudentList);
             }
         }
+    }
+
+    public void initViewList(){
+        RecyclerView studentRecycView;
+        RecyclerView.LayoutManager   recycLayM;
+
+        studentRecycView = (RecyclerView) findViewById(R.id.mainList_RecyView);
+        recycLayM = new LinearLayoutManager(this);
+        recycAdpt = new NameList_Rem_RecyclerViewAdapter(GlobalStates.StudentList, this);
+
+        studentRecycView.setLayoutManager(recycLayM);
+        studentRecycView.setAdapter(recycAdpt);
     }
 
     public void loadData(){
@@ -232,7 +256,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
             String rawJSON = openRoster(appInfo.LocalRosterName, false);
             GlobalStates.StudentList.DeleteStoredList();
             GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
-            updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
+            recycAdpt.updateFilter(GlobalStates.StudentList);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -267,13 +291,6 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         fileIO.SaveLocalFile(appInfo.LocalSettingsName, appInfo.toString());
     }
 
-    //Updates the list on the screen (calls function in sub-fragment)
-    public void updateScreenList(StudentList _studentList, String _currentRoom){ //Updates the names on the screen
-        //Get the nameList fragment
-        Fragment_NameList listFrag = (Fragment_NameList)getSupportFragmentManager().findFragmentById(R.id.nameListWrapper);
-        listFrag.updateList(_studentList);
-    }
-
     public boolean selectName(int _id){
         return true;
     }
@@ -302,7 +319,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         }
 
         saveData();
-        updateScreenList(GlobalStates.StudentList, appInfo.CurrentRoom);
+        recycAdpt.updateFilter(GlobalStates.StudentList);
 
         return true;
     }

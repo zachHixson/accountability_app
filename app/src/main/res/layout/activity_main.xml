@@ -19,7 +19,7 @@
         tools:layout="@layout/fragment_topbar" />
 
     <!--Main Body Wrapper-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -27,13 +27,21 @@
         android:baselineAligned="false">
 
         <!--Name List-->
-        <fragment
-            android:id="@+id/nameListWrapper"
-            android:name="com.example.zach.accountability.Fragments.Fragment_NameList"
-            android:layout_width="0dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mainList_RecyView"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            tools:layout="@layout/fragment_namelist" />
+            android:scrollbars="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/addButton"/>
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_new_item"
+            android:tint="#000000"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
 </LinearLayout>
