@@ -4,8 +4,12 @@ package com.example.zach.accountability.Data_Structures;
 This class declares global settings for the app for all other classes to use
 */
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.example.zach.accountability.IO.FileIO;
 
 public class Settings {
     //Constant Settings
@@ -28,8 +32,6 @@ public class Settings {
         this.RoomCount = 0;
     }
 
-    //Implement To JSON Method (also for Student)
-
     //Converts savable settings into json obj
     private JSONObject ToJSONObj(){
         JSONObject jObj = new JSONObject();
@@ -44,8 +46,24 @@ public class Settings {
         return jObj;
     }
 
+    public void Load(Context ctx){
+        FileIO fileIO = new FileIO(ctx);
+        try{
+            String rawSettings = fileIO.OpenLocalFile(this.LocalSettingsName);
+            this.LoadJSON(rawSettings);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void Save(Context ctx){
+        FileIO fileIO = new FileIO(ctx);
+        fileIO.SaveLocalFile(this.LocalSettingsName, this.toString());
+    }
+
     //Sets dynamic settings from loaded JSON object string
-    public void LoadJSON(String _string){
+    private void LoadJSON(String _string){
         try {
             JSONObject jObj = new JSONObject(_string);
             this.CurrentRoom = jObj.getString("currentRoom");
