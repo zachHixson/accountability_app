@@ -7,6 +7,7 @@ package com.example.zach.accountability.Data_Structures;
 import android.app.Application;
 
 public class GlobalStates extends Application{
+    public static Settings Settings;
     public static StudentList StudentList;
     public static String CurrentRoom = "";
 }

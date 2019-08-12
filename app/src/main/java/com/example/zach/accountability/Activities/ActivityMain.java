@@ -32,7 +32,6 @@ import com.example.zach.accountability.R;
 
 public class ActivityMain extends AppCompatActivity implements Interface_ListEvents, Interface_MainListEvents {
     //Create the main student list
-    Settings appInfo = new Settings();
     ArrayList<String> actionHistory = new ArrayList<>();
 
     private NameList_Rem_RecyclerViewAdapter recycAdpt;
@@ -40,6 +39,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GlobalStates.Settings = new Settings();
         GlobalStates.StudentList = new StudentList();
         loadData();
         setContentView(R.layout.activity_main);
@@ -58,7 +58,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     @Override
     protected void onStart() {
         super.onStart();
-        appInfo.CurrentRoom = "main";
+        GlobalStates.Settings.CurrentRoom = "main";
         initViewList();
     }
 
@@ -116,7 +116,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                     }
                 });
 
-                if (appInfo.RoomCount > 0) {
+                if (GlobalStates.Settings.RoomCount > 0) {
                     alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
@@ -142,10 +142,10 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                         String fName = txtFName.getText().toString();
                         String lName = txtLName.getText().toString();
 
-                        GlobalStates.StudentList.AddTemp(fName, lName, appInfo.CurrentRoom); // remove #########################
+                        GlobalStates.StudentList.AddTemp(fName, lName, GlobalStates.Settings.CurrentRoom); // remove #########################
                         ArrayList<Integer> singleId = new ArrayList<Integer>();
                         singleId.add(GlobalStates.StudentList.Size() - 1);
-                        addStudentsToRoom(singleId, GlobalStates.StudentList, appInfo.CurrentRoom);
+                        addStudentsToRoom(singleId, GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
                         recycAdpt.updateFilter(GlobalStates.StudentList);
                     }
                 });
@@ -209,7 +209,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         if (requestCode == 1){
             //Make sure request was successful
             if(resultCode == RESULT_OK){
-                addStudentsToRoom(data.getIntegerArrayListExtra("idList"), GlobalStates.StudentList, appInfo.CurrentRoom);
+                addStudentsToRoom(data.getIntegerArrayListExtra("idList"), GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
 
                 ArrayList<Integer> delTempIds = data.getIntegerArrayListExtra("delTempIds");
 
@@ -241,9 +241,9 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
 
         //Load Settings and Data
         try {
-            String rawSettings = fileIO.OpenLocalFile(appInfo.LocalSettingsName);
-            appInfo.LoadJSON(rawSettings);
-            GlobalStates.CurrentRoom = appInfo.CurrentRoom;
+            String rawSettings = fileIO.OpenLocalFile(GlobalStates.Settings.LocalSettingsName);
+            GlobalStates.Settings.LoadJSON(rawSettings);
+            GlobalStates.CurrentRoom = GlobalStates.Settings.CurrentRoom;
             updateRoomCount(GlobalStates.StudentList);
         }catch (Exception e){
             e.printStackTrace();
@@ -251,7 +251,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
 
         //Load Previous Roster
         try{
-            String rawJSON = openRoster(appInfo.LocalRosterName, false);
+            String rawJSON = openRoster(GlobalStates.Settings.LocalRosterName, false);
             GlobalStates.StudentList.DeleteStoredList();
             GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
             recycAdpt.updateFilter(GlobalStates.StudentList);
@@ -263,7 +263,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     //Opens a roster from the specified path
     public String openRoster(String _path, boolean _external){
         String returnString = "";
-        String fileName = appInfo.LocalRosterName;
+        String fileName = GlobalStates.Settings.LocalRosterName;
         FileIO fileIO = new FileIO(this);
 
         //Check to make sure external storage exists
@@ -283,10 +283,10 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         FileIO fileIO = new FileIO(this);
 
         //Save the student list when the app is exited
-        fileIO.SaveLocalFile(appInfo.LocalRosterName, GlobalStates.StudentList.ToJSONString());
+        fileIO.SaveLocalFile(GlobalStates.Settings.LocalRosterName, GlobalStates.StudentList.ToJSONString());
 
         //Save Settings
-        fileIO.SaveLocalFile(appInfo.LocalSettingsName, appInfo.toString());
+        fileIO.SaveLocalFile(GlobalStates.Settings.LocalSettingsName, GlobalStates.Settings.toString());
     }
 
     public boolean selectName(int _id){
@@ -355,21 +355,21 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     }
 
     public String getRoom(){
-        return appInfo.CurrentRoom;
+        return GlobalStates.Settings.CurrentRoom;
     }
 
     public boolean updateRoomCount(StudentList inpStudentList){
-        appInfo.RoomCount = 0;
+        GlobalStates.Settings.RoomCount = 0;
 
         for (int i = 0; i < inpStudentList.Size(); i++){
             if (inpStudentList.GetStudent(i).IsAdded()){
-                appInfo.RoomCount++;
+                GlobalStates.Settings.RoomCount++;
             }
         }
 
         //Call method in TopBar sub-fragment
         Fragment_TopBar topBar = (Fragment_TopBar)getSupportFragmentManager().findFragmentById(R.id.topBar);
-        topBar.updateRoomCount(appInfo.RoomCount);
+        topBar.updateRoomCount(GlobalStates.Settings.RoomCount);
 
         return true;
     }
@@ -377,7 +377,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     //Add Item to history
     public boolean addToHistory(String _action, String _text){
         //If adding an item to history would exceed the max amount of history items, then delete the last one before adding
-        if ((actionHistory.size() + 1) > appInfo.MaxHistorySteps){
+        if ((actionHistory.size() + 1) > GlobalStates.Settings.MaxHistorySteps){
             actionHistory.remove(actionHistory.size() - 1);
         }
 
