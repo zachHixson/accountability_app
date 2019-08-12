@@ -103,6 +103,7 @@ public class ActivityAddStudent extends AppCompatActivity implements Interface_L
     public boolean selectName(int _id){
         //Add student id to list
         idList.add(_id);
+        GlobalStates.StudentList.Save(this, GlobalStates.Settings.LocalRosterName);
         return true;
     }
 
