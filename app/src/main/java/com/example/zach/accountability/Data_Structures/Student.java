@@ -21,11 +21,29 @@ public class Student {
             this.FirstName = _jObj.getString("fName");
             this.LastName = _jObj.getString("lName");
             this.Info = _jObj.getString("allergies");
-            this.Room = _jObj.getString("room");
             this.Id = _id;
-            this.IsTemporary = _jObj.getBoolean("isTemp");
             this.MarkedForDeletion = false;
-            this.IsSelected = _jObj.getBoolean("isSelected");
+
+            if (_jObj.has("room")){
+                this.Room = _jObj.getString("room");
+            }
+            else{
+                this.Room = "";
+            }
+
+            if (_jObj.has("isTemp")){
+                this.IsTemporary = _jObj.getBoolean("isTemp");
+            }
+            else{
+                this.IsTemporary = false;
+            }
+
+            if (_jObj.has("isSelected")) {
+                this.IsSelected = _jObj.getBoolean("isSelected");
+            }
+            else{
+                this.IsSelected = false;
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

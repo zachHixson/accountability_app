@@ -28,8 +28,6 @@ public class Settings {
         this.RoomCount = 0;
     }
 
-    //Implement To JSON Method (also for Student)
-
     //Converts savable settings into json obj
     private JSONObject ToJSONObj(){
         JSONObject jObj = new JSONObject();
