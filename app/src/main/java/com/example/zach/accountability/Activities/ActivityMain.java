@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,9 +42,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         super.onCreate(savedInstanceState);
         GlobalStates.Settings = new Settings();
         GlobalStates.StudentList = new StudentList();
-        loadData();
         setContentView(R.layout.activity_main);
-        updateRoomCount(GlobalStates.StudentList);
 
         ImageButton btnAddStdnts = (ImageButton)findViewById(R.id.addButton);
 
@@ -58,6 +57,8 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     @Override
     protected void onStart() {
         super.onStart();
+        loadData();
+        updateRoomCount(GlobalStates.StudentList);
         GlobalStates.Settings.CurrentRoom = "main";
         initViewList();
     }
@@ -164,8 +165,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                 GlobalStates.StudentList.DeleteStoredList();
 
                 //Open Roster from the downloads  and save it to local storage
-                String rawJSON = openRoster(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), true);
-                GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
+                GlobalStates.StudentList.Load(this, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), true);
 
                 //Save local file
                 saveData();
@@ -237,45 +237,12 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     }
 
     public void loadData(){
-        FileIO fileIO = new FileIO(this);
-
         //Load Settings and Data
-        try {
-            String rawSettings = fileIO.OpenLocalFile(GlobalStates.Settings.LocalSettingsName);
-            GlobalStates.Settings.LoadJSON(rawSettings);
-            GlobalStates.CurrentRoom = GlobalStates.Settings.CurrentRoom;
-            updateRoomCount(GlobalStates.StudentList);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        GlobalStates.Settings.Load(this);
+        GlobalStates.CurrentRoom = GlobalStates.Settings.CurrentRoom;
 
         //Load Previous Roster
-        try{
-            String rawJSON = openRoster(GlobalStates.Settings.LocalRosterName, false);
-            GlobalStates.StudentList.DeleteStoredList();
-            GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
-            recycAdpt.updateFilter(GlobalStates.StudentList);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    //Opens a roster from the specified path
-    public String openRoster(String _path, boolean _external){
-        String returnString = "";
-        String fileName = GlobalStates.Settings.LocalRosterName;
-        FileIO fileIO = new FileIO(this);
-
-        //Check to make sure external storage exists
-        if (_external && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-            File file = new File(_path, fileName); //Get full file path
-            returnString = fileIO.OpenExternalFile(file);
-        }
-        else if (!_external){
-            returnString = fileIO.OpenLocalFile(fileName);
-        }
-
-        return returnString;
+        GlobalStates.StudentList.Load(this, GlobalStates.Settings.LocalRosterName, false);
     }
 
     public void saveData(){
@@ -283,10 +250,10 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         FileIO fileIO = new FileIO(this);
 
         //Save the student list when the app is exited
-        fileIO.SaveLocalFile(GlobalStates.Settings.LocalRosterName, GlobalStates.StudentList.ToJSONString());
+        GlobalStates.StudentList.Save(this, GlobalStates.Settings.LocalRosterName);
 
         //Save Settings
-        fileIO.SaveLocalFile(GlobalStates.Settings.LocalSettingsName, GlobalStates.Settings.toString());
+        GlobalStates.Settings.Save(this);
     }
 
     public boolean selectName(int _id){
@@ -369,6 +336,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
 
         //Call method in TopBar sub-fragment
         Fragment_TopBar topBar = (Fragment_TopBar)getSupportFragmentManager().findFragmentById(R.id.topBar);
+        Log.d("prnt", Integer.toString(GlobalStates.Settings.RoomCount));
         topBar.updateRoomCount(GlobalStates.Settings.RoomCount);
 
         return true;

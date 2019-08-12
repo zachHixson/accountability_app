@@ -1,8 +1,14 @@
 package com.example.zach.accountability.Data_Structures;
 
+import android.content.Context;
+import android.os.Environment;
+
+import com.example.zach.accountability.IO.FileIO;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class StudentList {
@@ -33,6 +39,34 @@ public class StudentList {
 
     public void AddTemp(String _fName, String _lName, String _currentRoom){
         this.StudentArray.add(new Student(_fName, _lName, _currentRoom, this.StudentArray.size()));
+    }
+
+    public void Load(Context ctx, String rosterName, boolean external){
+        FileIO fileIO = new FileIO(ctx);
+        String rawJson = "";
+
+        try {
+            //Check to make sure external storage exists
+            boolean test = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+            if (external && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                File file = new File(rosterName, "roster.json"); //Get full file path
+                rawJson = fileIO.OpenExternalFile(file);
+            } else if (!external) {
+                rawJson = fileIO.OpenLocalFile(rosterName);
+            }
+
+            this.DeleteStoredList();
+            this.PopulateFromJSONString(rawJson);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void Save(Context ctx, String rosterName){
+        FileIO fileIO = new FileIO(ctx);
+        fileIO.SaveLocalFile(rosterName, this.ToJSONString());
     }
 
     public String ToJSONString(){
