@@ -24,21 +24,9 @@
         android:id="@+id/optAddTemp"
         android:title="Add Temporary Student" />
 
-    <!--<item
-        android:id="@+id/optConnectionSettings"
-        android:title="Connection Settings"/>-->
-
     <item
         android:id="@+id/optOpen"
-        android:title="Open">
-
-        <menu>
-            <item
-                android:id="@+id/optImportDownloads"
-                android:title="Import roster from /Downloads"
-                />
-        </menu>
-    </item>
+        android:title="Open Roster"/>
 
     <item
         android:id="@+id/optAbout"

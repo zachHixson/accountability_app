@@ -1,10 +1,13 @@
 package com.example.zach.accountability.IO;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.InputStream;
 
 /*
   Class handles reading and writing basic android files
@@ -46,6 +49,22 @@ public class FileIO {
         String returnString = loadFile(_file);
 
         return returnString;
+    }
+
+    public String OpenContentUri(Uri uri){
+        try{
+            InputStream inputStream = ctx.getContentResolver().openInputStream(uri);
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            return new String(buffer, "UTF-8");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void SaveLocalFile(String _fileName, String _contents){

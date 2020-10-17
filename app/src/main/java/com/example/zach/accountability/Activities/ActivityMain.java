@@ -1,6 +1,7 @@
 package com.example.zach.accountability.Activities;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,9 @@ import com.example.zach.accountability.NameList_RecyclerViewAdapter.NameList_Rem
 import com.example.zach.accountability.R;
 
 public class ActivityMain extends AppCompatActivity implements Interface_ListEvents, Interface_MainListEvents {
-    //Create the main student list
+    private final int ACTIVITY_ADD_STUDENT = 1;
+    private final int ACTIVITY_OPEN_ROSTER = 2;
+
     ArrayList<String> actionHistory = new ArrayList<>();
 
     private NameList_Rem_RecyclerViewAdapter recycAdpt;
@@ -161,14 +164,8 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                 alertDialog.show();
 
                 return true;
-            case R.id.optImportDownloads:
-                GlobalStates.StudentList.DeleteStoredList();
-
-                //Open Roster from the downloads  and save it to local storage
-                GlobalStates.StudentList.Load(this, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), true);
-
-                //Save local file
-                saveData();
+            case R.id.optOpen:
+                openRosterDialog();
                 return true;
             case R.id.optAbout:
                 //Set box contents
@@ -205,22 +202,36 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Check which request we are responding to
-        if (requestCode == 1){
-            //Make sure request was successful
-            if(resultCode == RESULT_OK){
-                addStudentsToRoom(data.getIntegerArrayListExtra("idList"), GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
+        switch (requestCode){
+            case ACTIVITY_ADD_STUDENT:
+                //Make sure request was successful
+                if(resultCode == RESULT_OK){
+                    addStudentsToRoom(data.getIntegerArrayListExtra("idList"), GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
 
-                ArrayList<Integer> delTempIds = data.getIntegerArrayListExtra("delTempIds");
+                    ArrayList<Integer> delTempIds = data.getIntegerArrayListExtra("delTempIds");
 
-                //Remove and mark all names in delTempIds for deletion
-                for (int i = 0; i < delTempIds.size(); i++){
-                    removeName(delTempIds.get(i), true);
-                    updateRoomCount(GlobalStates.StudentList);
+                    //Remove and mark all names in delTempIds for deletion
+                    for (int i = 0; i < delTempIds.size(); i++){
+                        removeName(delTempIds.get(i), true);
+                        updateRoomCount(GlobalStates.StudentList);
+                    }
+
+                    recycAdpt.updateFilter(GlobalStates.StudentList);
                 }
+                break;
+            case ACTIVITY_OPEN_ROSTER:
+                if (resultCode == RESULT_OK){
+                    Uri uri = data.getData();
+                    FileIO fileIO = new FileIO(this);
+                    String rawJSON = fileIO.OpenContentUri(uri);
 
-                recycAdpt.updateFilter(GlobalStates.StudentList);
-            }
+                    if (rawJSON != null) {
+                        GlobalStates.StudentList.DeleteStoredList();
+                        GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
+                        saveData();
+                    }
+                }
+                break;
         }
     }
 
@@ -359,7 +370,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     public boolean openAddMenu(){
         Intent intent = new Intent(ActivityMain.this, ActivityAddStudent.class);
 
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, ACTIVITY_ADD_STUDENT);
 
         return true;
     }
@@ -370,5 +381,13 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         dialogCreator.CreateSimpleAlert(_title, _text.replace("; ", "\n"));
 
         return true;
+    }
+
+    private void openRosterDialog(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/octet-stream");
+
+        startActivityForResult(intent, ACTIVITY_OPEN_ROSTER);
     }
 }
