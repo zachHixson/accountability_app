@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.example.zach.accountability.BuildConfig;
 import com.example.zach.accountability.Data_Structures.GlobalStates;
 import com.example.zach.accountability.Data_Structures.Settings;
 import com.example.zach.accountability.Data_Structures.StudentList;
@@ -173,7 +174,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                         "%1$s\n%2$s\n%3$s",
                         this.getString(R.string.AboutCreator),
                         this.getString(R.string.AboutYear),
-                        this.getString(R.string.AboutVersion)
+                        BuildConfig.VERSION_NAME
                 );
 
                 //Launch info box
