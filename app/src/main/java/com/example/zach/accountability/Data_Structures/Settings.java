@@ -20,6 +20,7 @@ public class Settings {
     //Dynamic settings
     public String CurrentRoom;
     public int RoomCount;
+    public boolean sortByFirst;
 
     public Settings(){
         //Set constant settings
@@ -30,6 +31,7 @@ public class Settings {
         //Set dynamic settings
         this.CurrentRoom = "";
         this.RoomCount = 0;
+        this.sortByFirst = true;
     }
 
     //Converts savable settings into json obj
@@ -39,6 +41,7 @@ public class Settings {
         try {
             jObj.put("currentRoom", this.CurrentRoom);
             jObj.put("roomCount", this.RoomCount);
+            jObj.put("sortByFirst", this.sortByFirst);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -68,6 +71,7 @@ public class Settings {
             JSONObject jObj = new JSONObject(_string);
             this.CurrentRoom = jObj.getString("currentRoom");
             this.RoomCount = jObj.getInt("roomCount");
+            this.sortByFirst = jObj.getBoolean("sortByFirst");
         }catch (Exception e){
             e.printStackTrace();
         }

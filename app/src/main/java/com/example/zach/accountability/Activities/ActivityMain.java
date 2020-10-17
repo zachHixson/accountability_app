@@ -194,6 +194,25 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                 openInfoBox(this.getString(R.string.HistoryDialogTitle), boxContents);
 
                 return true;
+            case R.id.optSort:
+                int checkedOption = 0;
+
+                if (!GlobalStates.Settings.sortByFirst){
+                    checkedOption = 1;
+                }
+
+                alertDialogBuilder = new AlertDialog.Builder(ActivityMain.this);
+                alertDialogBuilder.setTitle(R.string.SortBy);
+                alertDialogBuilder.setSingleChoiceItems(R.array.SortBy, checkedOption,
+                    new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            GlobalStates.Settings.sortByFirst = (which == 0);
+                        }
+                    }
+                );
+                alertDialogBuilder.setPositiveButton(R.string.Close, null);
+                alertDialogBuilder.show();
             default:
                 return super.onOptionsItemSelected(item);
         }

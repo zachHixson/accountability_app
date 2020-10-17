@@ -2,11 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--Main Bar options-->
-    <!--<item
-        android:id="@+id/searchButton"
-        android:icon="@drawable/ic_search"
-        android:title="Search"
-        app:showAsAction="ifRoom"/>-->
+
+    <item
+        android:id="@+id/optSort"
+        android:icon="@drawable/ic_sort"
+        android:title="Sort by"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/optHistoryButton"
