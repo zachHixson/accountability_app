@@ -2,7 +2,6 @@ package com.example.zach.accountability.IO;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,11 +19,12 @@ public class FileIO {
         this.ctx = _ctx;
     }
 
-    private String loadFile(File _file){
-        String returnString = "";
+    public String OpenLocalFile(String _filename){
+        File file = new File(ctx.getFilesDir(), _filename);
+        String returnString = null;
 
         try {
-            FileInputStream inputStream = new FileInputStream(_file);
+            FileInputStream inputStream = new FileInputStream(file);
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);
@@ -34,19 +34,6 @@ public class FileIO {
         catch (Exception e){
             e.printStackTrace();
         }
-
-        return returnString;
-    }
-
-    public String OpenLocalFile(String _filename){
-        File file = new File(ctx.getFilesDir(), _filename);
-        String returnString = loadFile(file);
-
-        return returnString;
-    }
-
-    public String OpenExternalFile(File _file){
-        String returnString = loadFile(_file);
 
         return returnString;
     }

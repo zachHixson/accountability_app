@@ -248,12 +248,20 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
     }
 
     public void loadData(){
+        FileIO fileIO = new FileIO(this);
+        String rawJSON;
+
         //Load Settings and Data
         GlobalStates.Settings.Load(this);
         GlobalStates.CurrentRoom = GlobalStates.Settings.CurrentRoom;
 
         //Load Previous Roster
-        GlobalStates.StudentList.Load(this, GlobalStates.Settings.LocalRosterName, false);
+        rawJSON = fileIO.OpenLocalFile(GlobalStates.Settings.LocalRosterName);
+
+        if (rawJSON != null){
+            GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
+            saveData();
+        }
     }
 
     public void saveData(){

@@ -41,29 +41,6 @@ public class StudentList {
         this.StudentArray.add(new Student(_fName, _lName, _currentRoom, this.StudentArray.size()));
     }
 
-    public void Load(Context ctx, String rosterName, boolean external){
-        FileIO fileIO = new FileIO(ctx);
-        String rawJson = "";
-
-        try {
-            //Check to make sure external storage exists
-            boolean test = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-            if (external && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                File file = new File(rosterName, "roster.json"); //Get full file path
-                rawJson = fileIO.OpenExternalFile(file);
-            } else if (!external) {
-                rawJson = fileIO.OpenLocalFile(rosterName);
-            }
-
-            this.DeleteStoredList();
-            this.PopulateFromJSONString(rawJson);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
     public void Save(Context ctx, String rosterName){
         FileIO fileIO = new FileIO(ctx);
         fileIO.SaveLocalFile(rosterName, this.ToJSONString());
@@ -94,10 +71,6 @@ public class StudentList {
 
     public Student GetStudent(int _id){
         return this.StudentArray.get(_id);
-    }
-
-    public void SetStudentRoom(int _id, String _room){
-        this.StudentArray.get(_id).SetRoom(_room);
     }
 
     public void SetAllSelected(boolean newStatus){
