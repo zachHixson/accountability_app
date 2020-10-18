@@ -147,11 +147,12 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                         String fName = txtFName.getText().toString();
                         String lName = txtLName.getText().toString();
 
-                        GlobalStates.StudentList.AddTemp(fName, lName, GlobalStates.Settings.CurrentRoom); // remove #########################
-                        GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
+                        GlobalStates.StudentList.AddTemp(fName, lName, GlobalStates.Settings.CurrentRoom);
                         ArrayList<Integer> singleId = new ArrayList<Integer>();
                         singleId.add(GlobalStates.StudentList.Size() - 1);
                         addStudentsToRoom(singleId, GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
+                        GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
+                        GlobalStates.StudentList.RefreshIds();
                         recycAdpt.updateFilter(GlobalStates.StudentList);
                     }
                 });
