@@ -279,6 +279,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         rawJSON = fileIO.OpenLocalFile(GlobalStates.Settings.LocalRosterName);
 
         if (rawJSON != null){
+            GlobalStates.StudentList.DeleteStoredList();
             GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
             saveData();
         }
