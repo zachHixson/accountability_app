@@ -31,7 +31,7 @@ public class Settings {
         //Set dynamic settings
         this.CurrentRoom = "";
         this.RoomCount = 0;
-        this.sortByFirst = true;
+        this.sortByFirst = false;
     }
 
     //Converts savable settings into json obj
