@@ -102,5 +102,13 @@ public class StudentList {
         else{
             Collections.sort(StudentArray, Student.LastNameComparator);
         }
+
+        RefreshIds();
+    }
+
+    public void RefreshIds(){
+        for (int i = 0; i < this.StudentArray.size(); i++){
+            StudentArray.get(i).SetId(i);
+        }
     }
 }

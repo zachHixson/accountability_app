@@ -148,6 +148,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                         String lName = txtLName.getText().toString();
 
                         GlobalStates.StudentList.AddTemp(fName, lName, GlobalStates.Settings.CurrentRoom); // remove #########################
+                        GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
                         ArrayList<Integer> singleId = new ArrayList<Integer>();
                         singleId.add(GlobalStates.StudentList.Size() - 1);
                         addStudentsToRoom(singleId, GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
@@ -215,6 +216,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
+                        recycAdpt.updateFilter(GlobalStates.StudentList);
                     }
                 });
                 alertDialogBuilder.show();
@@ -286,6 +288,7 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         if (rawJSON != null){
             GlobalStates.StudentList.DeleteStoredList();
             GlobalStates.StudentList.PopulateFromJSONString(rawJSON);
+            GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
             saveData();
         }
     }
@@ -364,10 +367,6 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         saveData();
 
         return true;
-    }
-
-    public String getRoom(){
-        return GlobalStates.Settings.CurrentRoom;
     }
 
     public boolean updateRoomCount(StudentList inpStudentList){
