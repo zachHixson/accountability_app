@@ -95,132 +95,26 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //Declare variables
-        AlertDialog.Builder alertDialogBuilder;
-        AlertDialog alertDialog;
-
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.optClearList:
-                //Pop up "Are You Sure" dialog
-                alertDialogBuilder = new AlertDialog.Builder(ActivityMain.this);
-                alertDialogBuilder.setTitle(this.getString(R.string.Warning));
-                alertDialogBuilder.setMessage(this.getString(R.string.ClearListConfirm));
-                alertDialogBuilder.setPositiveButton(this.getString(R.string.Ok), new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        //Get the nameList fragment
-                        GlobalStates.StudentList.ClearList();
-                        updateRoomCount(GlobalStates.StudentList);
-                        recycAdpt.updateFilter(GlobalStates.StudentList);
-                    }
-                });
-                alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        //Exit the dialog
-                        dialog.cancel();
-                    }
-                });
-
-                if (GlobalStates.Settings.RoomCount > 0) {
-                    alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-
+                openClearListDialog();
                 return true;
             case R.id.optAddTemp:
-                //Declare inflater
-                LayoutInflater inflater = LayoutInflater.from(ActivityMain.this);
-                View promptView = inflater.inflate(R.layout.dialog_add_temp, null);
-
-                alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setView(promptView);
-
-                //Set title
-                alertDialogBuilder.setTitle(this.getString(R.string.AddTempStudentDialogTitle));
-
-                final EditText txtFName = (EditText)promptView.findViewById(R.id.addTempFName);
-                final EditText txtLName = (EditText)promptView.findViewById(R.id.addTempLName);
-
-                //Set contents
-                alertDialogBuilder.setPositiveButton(this.getString(R.string.Add), new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        String fName = txtFName.getText().toString();
-                        String lName = txtLName.getText().toString();
-
-                        GlobalStates.StudentList.AddTemp(fName, lName, GlobalStates.Settings.CurrentRoom);
-                        ArrayList<Integer> singleId = new ArrayList<Integer>();
-                        singleId.add(GlobalStates.StudentList.Size() - 1);
-                        addStudentsToRoom(singleId, GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
-                        GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
-                        GlobalStates.StudentList.RefreshIds();
-                        recycAdpt.updateFilter(GlobalStates.StudentList);
-                    }
-                });
-                alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        dialog.cancel();
-                    }
-                });
-
-                //Create alert dialog
-                alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
+                openAddTempDialog();
                 return true;
             case R.id.optOpen:
                 openRosterDialog();
                 return true;
             case R.id.optAbout:
-                //Set box contents
-                String contents = String.format(
-                        "%1$s\n%2$s\n%3$s",
-                        this.getString(R.string.AboutCreator),
-                        this.getString(R.string.AboutYear),
-                        BuildConfig.VERSION_NAME
-                );
-
-                //Launch info box
-                DialogCreator dialogCreator = new DialogCreator(ActivityMain.this);
-                dialogCreator.CreateSimpleAlert(this.getString(R.string.AboutDialogTitle), contents);
-
+                openAboutDialog();
                 return true;
             case R.id.optHistoryButton:
-                String boxContents = "";
-
-                //Set box contents
-                for (int i = 0; i < actionHistory.size(); i++){
-                    boxContents += String.format("%1$s \n", actionHistory.get(i));
-                }
-
-                //Open History box
-                openInfoBox(this.getString(R.string.HistoryDialogTitle), boxContents);
-
+                openHistoryDialog();
                 return true;
             case R.id.optSort:
-                int checkedOption = 0;
-
-                if (!GlobalStates.Settings.sortByFirst){
-                    checkedOption = 1;
-                }
-
-                alertDialogBuilder = new AlertDialog.Builder(ActivityMain.this);
-                alertDialogBuilder.setTitle(R.string.SortBy);
-                alertDialogBuilder.setSingleChoiceItems(R.array.SortBy, checkedOption,
-                    new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            GlobalStates.Settings.sortByFirst = (which == 0);
-                        }
-                    }
-                );
-                alertDialogBuilder.setPositiveButton(R.string.Close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
-                        recycAdpt.updateFilter(GlobalStates.StudentList);
-                    }
-                });
-                alertDialogBuilder.show();
+                openSortDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -423,5 +317,128 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
         intent.setType("application/octet-stream");
 
         startActivityForResult(intent, ACTIVITY_OPEN_ROSTER);
+    }
+
+    private void openClearListDialog(){
+        if (GlobalStates.Settings.RoomCount > 0) {
+            AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(ActivityMain.this);
+            AlertDialog alertDialog;
+
+            alertDialogBuilder.setTitle(this.getString(R.string.Warning));
+            alertDialogBuilder.setMessage(this.getString(R.string.ClearListConfirm));
+            alertDialogBuilder.setPositiveButton(this.getString(R.string.Ok), new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int id){
+                    //Get the nameList fragment
+                    GlobalStates.StudentList.ClearList();
+                    updateRoomCount(GlobalStates.StudentList);
+                    recycAdpt.updateFilter(GlobalStates.StudentList);
+                }
+            });
+            alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int id){
+                    //Exit the dialog
+                    dialog.cancel();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+    }
+
+    public void openAddTempDialog(){
+        AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(ActivityMain.this);
+        AlertDialog alertDialog;
+
+        //Declare inflater
+        LayoutInflater inflater = LayoutInflater.from(ActivityMain.this);
+        View promptView = inflater.inflate(R.layout.dialog_add_temp, null);
+
+        alertDialogBuilder.setView(promptView);
+
+        //Set title
+        alertDialogBuilder.setTitle(this.getString(R.string.AddTempStudentDialogTitle));
+
+        final EditText txtFName = (EditText)promptView.findViewById(R.id.addTempFName);
+        final EditText txtLName = (EditText)promptView.findViewById(R.id.addTempLName);
+
+        //Set contents
+        alertDialogBuilder.setPositiveButton(this.getString(R.string.Add), new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+                String fName = txtFName.getText().toString();
+                String lName = txtLName.getText().toString();
+
+                GlobalStates.StudentList.AddTemp(fName, lName, GlobalStates.Settings.CurrentRoom);
+                ArrayList<Integer> singleId = new ArrayList<Integer>();
+                singleId.add(GlobalStates.StudentList.Size() - 1);
+                addStudentsToRoom(singleId, GlobalStates.StudentList, GlobalStates.Settings.CurrentRoom);
+                GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
+                GlobalStates.StudentList.RefreshIds();
+                recycAdpt.updateFilter(GlobalStates.StudentList);
+            }
+        });
+        alertDialogBuilder.setNegativeButton(this.getString(R.string.Cancel), new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+                dialog.cancel();
+            }
+        });
+
+        //Create alert dialog
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public void openAboutDialog(){
+        //Set box contents
+        String contents = String.format(
+                "%1$s\n%2$s\n%3$s",
+                this.getString(R.string.AboutCreator),
+                this.getString(R.string.AboutYear),
+                BuildConfig.VERSION_NAME
+        );
+
+        //Launch info box
+        DialogCreator dialogCreator = new DialogCreator(ActivityMain.this);
+        dialogCreator.CreateSimpleAlert(this.getString(R.string.AboutDialogTitle), contents);
+    }
+
+    public void openHistoryDialog(){
+        String boxContents = "";
+
+        //Set box contents
+        for (int i = 0; i < actionHistory.size(); i++){
+            boxContents += String.format("%1$s \n", actionHistory.get(i));
+        }
+
+        //Open History box
+        openInfoBox(this.getString(R.string.HistoryDialogTitle), boxContents);
+    }
+
+    public void openSortDialog(){
+        int checkedOption = 0;
+        AlertDialog.Builder alertDialogBuilder;
+
+        if (!GlobalStates.Settings.sortByFirst){
+            checkedOption = 1;
+        }
+
+        alertDialogBuilder = new AlertDialog.Builder(ActivityMain.this);
+        alertDialogBuilder.setTitle(R.string.SortBy);
+        alertDialogBuilder.setSingleChoiceItems(R.array.SortBy, checkedOption,
+                new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        GlobalStates.Settings.sortByFirst = (which == 0);
+                    }
+                }
+        );
+        alertDialogBuilder.setPositiveButton(R.string.Close, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
+                recycAdpt.updateFilter(GlobalStates.StudentList);
+            }
+        });
+        alertDialogBuilder.show();
     }
 }
