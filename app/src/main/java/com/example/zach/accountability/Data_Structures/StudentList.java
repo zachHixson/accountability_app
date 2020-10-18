@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StudentList {
     private ArrayList<Student> StudentArray = new ArrayList<>();
@@ -92,5 +93,14 @@ public class StudentList {
 
     public int Size(){
         return this.StudentArray.size();
+    }
+
+    public void Sort(boolean _byFirst){
+        if (_byFirst){
+            Collections.sort(StudentArray, Student.FirstNameComparator);
+        }
+        else{
+            Collections.sort(StudentArray, Student.LastNameComparator);
+        }
     }
 }

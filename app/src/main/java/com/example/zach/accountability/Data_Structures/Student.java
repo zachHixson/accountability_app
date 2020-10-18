@@ -1,6 +1,7 @@
 package com.example.zach.accountability.Data_Structures;
 
 import org.json.JSONObject;
+import java.util.Comparator;
 
 /*
 A Class that defines an individual student
@@ -157,4 +158,24 @@ public class Student {
 
         return  jObj;
     }
+
+    public static Comparator<Student> LastNameComparator = new Comparator<Student>() {
+        @Override
+        public int compare(Student s1, Student s2) {
+            String name1 = (s1.LastName + s1.FirstName).toUpperCase();
+            String name2 = (s2.LastName + s2.FirstName).toUpperCase();
+
+            return name1.compareTo(name2);
+        }
+    };
+
+    public static Comparator<Student> FirstNameComparator = new Comparator<Student>() {
+        @Override
+        public int compare(Student s1, Student s2) {
+            String name1 = (s1.FirstName + s1.LastName).toUpperCase();
+            String name2 = (s2.FirstName + s2.LastName).toUpperCase();
+
+            return name1.compareTo(name2);
+        }
+    };
 }

@@ -211,7 +211,12 @@ public class ActivityMain extends AppCompatActivity implements Interface_ListEve
                         }
                     }
                 );
-                alertDialogBuilder.setPositiveButton(R.string.Close, null);
+                alertDialogBuilder.setPositiveButton(R.string.Close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GlobalStates.StudentList.Sort(GlobalStates.Settings.sortByFirst);
+                    }
+                });
                 alertDialogBuilder.show();
             default:
                 return super.onOptionsItemSelected(item);
